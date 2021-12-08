@@ -1,0 +1,54 @@
+jenkins:
+  remotingSecurity:
+    enabled: true
+  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            description: "Jenkins administrators"
+            permissions:
+              - "Overall/Administer"
+            assignments:
+              - "admin"
+          - name: "readonly"
+            description: "Read-only users"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+            assignments:
+              - "authenticated"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  clouds:
+    - docker:
+        dockerApi:
+          dockerHost:
+            uri: "unix://var/run/docker.sock"
+        name: "docker"
+        templates:
+          - labelString: "deploy"
+            name: "jnlp"
+            dockerTemplateBase:
+              image: "jenkins/jnlp-slave:alpine"
+            pullStrategy: PULL_LATEST
+            remoteFs: "/home/jenkins"
+            connector: attach
+  
+security:
+  queueItemAuthenticator:
+    authenticators:
+      - global:
+          strategy: triggeringUsersAuthorizationStrategy
+
+unclassified:
+  location:
+    url: http://127.0.0.1:8080/
+  gitscm:
+    globalConfigName: jenkins
+    globalConfigEmail: jenkins@domain.local
