@@ -4,13 +4,16 @@ configuration-as-code
 docker-plugin
 git
 github-branch-source
+gradle
 job-dsl
+matrix-auth
 pipeline-github-lib
 pipeline-stage-view
 pipeline-utility-steps
 rebuild
-role-strategy
 ssh-slaves
 timestamper
 workflow-aggregator
+workflow-cps
+workflow-job
 ws-cleanup
