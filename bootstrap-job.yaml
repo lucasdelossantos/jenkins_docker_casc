@@ -1,15 +1,30 @@
 jobs:
   - script: >
       job('bootstrap-job') {
+        description('Bootstraps the Jenkins Server (installs all jobs using the jobs-dsl plugin)')
+        concurrentBuild(false)
+        triggers {
+            cron("H H * * *")
+        }
+        wrappers {
+            preBuildCleanup()
+        }
           scm {
-            git('https://github.com/org/jenkins-job-dsl-repo.git')
+            git('https://github.com/lucasdelossantos/jenkins_jobs_dsl.git')
           }
           steps {
+            gradle {
+                tasks('clean')
+                tasks('test')
+            }
             dsl {
-                external('*.groovy')
+                external('src/jobs/Test.groovy')
                 removeAction('DISABLE')
                 ignoreExisting()
-                additionalClasspath('lib')
+                additionalClasspath('src/main/groovy/')
+            }
+            publishers {
+              archiveJunit('build/test-results/**/*.xml')
             }
           }
       }
@@ -26,6 +41,7 @@ jobs:
       pipelineJob('test-pipeline') {
         definition {
           cps {
+            sandbox(true)
             script("""\
               pipeline {
                 agent any
