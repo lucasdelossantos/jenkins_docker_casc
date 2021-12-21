@@ -9,8 +9,6 @@ COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f $JENKINS_REF/plugins.txt
 
 #Setup JCasc code for Jenkins server automation
-COPY casc.yaml /var/jenkins_home/casc.yaml
-
 #Setup Seed job for DSL
 COPY *.yaml $CASC_JENKINS_CONFIG
 
