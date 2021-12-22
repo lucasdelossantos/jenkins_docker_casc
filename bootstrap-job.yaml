@@ -17,11 +17,11 @@ jobs:
                 tasks('clean')
                 tasks('test')
             }
-            dsl {
-                external('src/jobs/Test.groovy')
-                removeAction('DISABLE')
-                ignoreExisting()
-                additionalClasspath('src/main/groovy/')
+            jobDsl {
+                targets('src/jobs/Test.groovy')
+                removedJobAction('DISABLE')
+                ignoreExisting(true)
+                sandbox(true)
             }
             publishers {
               archiveJunit('build/test-results/**/*.xml')
