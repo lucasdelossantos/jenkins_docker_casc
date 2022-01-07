@@ -3,6 +3,19 @@ jobs:
       job('bootstrap-job') {
         description('Bootstraps the Jenkins Server (installs all jobs using the jobs-dsl plugin)')
         concurrentBuild(false)
+        properties {
+            authorizeProjectProperty {
+                strategy {
+                    specificUsersAuthorizationStrategy {
+                        userid('admin')
+                        password('admin')
+                        useApitoken(false)
+                        apitoken('')
+                        dontRestrictJobConfiguration(true)
+                    }
+                }
+            }
+        }
         triggers {
             cron("H H * * *")
         }

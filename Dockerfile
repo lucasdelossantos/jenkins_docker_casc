@@ -8,6 +8,9 @@ ENV JENKINS_REF /usr/share/jenkins/ref
 COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f $JENKINS_REF/plugins.txt
 
+# Setup Authorize-Project Plugin
+COPY --chown=jenkins:jenkins authorizeProjectConfiguration.groovy /usr/share/jenkins/ref/init.groovy.d/authorizeProjectConfiguration.groovy
+
 #Setup JCasc code for Jenkins server automation
 #Setup Seed job for DSL
 COPY *.yaml $CASC_JENKINS_CONFIG
