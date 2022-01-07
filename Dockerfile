@@ -3,17 +3,18 @@ FROM jenkins/jenkins:lts-jdk11
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV CASC_JENKINS_CONFIG /usr/share/jenkins/init.jcasc.d/
 ENV JENKINS_REF /usr/share/jenkins/ref
+ENV JENKINS_INIT /usr/share/jenkins/ref/init.groovy.d
 
 # Setup plugins to be installed
 COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f $JENKINS_REF/plugins.txt
 
 # Setup Authorize-Project Plugin
-COPY --chown=jenkins:jenkins authorizeProjectConfiguration.groovy /usr/share/jenkins/ref/init.groovy.d/authorizeProjectConfiguration.groovy
+COPY --chown=jenkins:jenkins groovy/* $JENKINS_INIT
 
 #Setup JCasc code for Jenkins server automation
 #Setup Seed job for DSL
-COPY *.yaml $CASC_JENKINS_CONFIG
+COPY casc/*.yaml $CASC_JENKINS_CONFIG
 
 USER root
 
