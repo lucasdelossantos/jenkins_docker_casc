@@ -31,7 +31,7 @@ jobs:
                 tasks('test')
             }
             jobDsl {
-                targets('src/jobs/Test.groovy')
+                targets('src/jobs/*.groovy')
                 removedJobAction('DISABLE')
                 ignoreExisting(true)
                 sandbox(true)
